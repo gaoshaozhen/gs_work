@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>新增客户</title>
+		<link  rel="stylesheet" type="text/css" href="/css/bootstrap/css/bootstrap.min.css"/>
+		<link  rel="stylesheet" type="text/css" href="/css/ui/plate.css"/>		
+	</head>
+	<body>
+		 <div id="wrapper">
+			<header id="main-header" th:include="header :: header"></header>
+			<aside id="main-menu"></aside>
+			<main id="main-content">
+				<div>导航/新增客户 <a onclick="window.history.go(-1)">返回</a></div><hr/>
+				
+				<form id="cust-form" action="/sys/cust/add" method="post">	
+					<div class="error-box"><ul></ul></div>				
+					<div class="input-group">
+						<span class="input-group-addon">客户名</span>
+						 <input name="custName" type="text" class="form-control" />
+					</div><br/>
+					<div class="input-group">
+						<span class="input-group-addon">公司名</span>
+						 <input name="custPlateName" type="text" class="form-control" />
+					</div><br/>
+					<div class="input-group">
+						<span class="input-group-addon">地址</span>
+						 <input name="address" type="text" class="form-control" />
+					</div><br/>
+					<button class="btn btn-primary">保存</button> 
+				</form>			
+			</main>
+		</div>
+		<input type="text"/>
+	</body>
+	<script type="text/javascript" src="/js/lib/jquery-3.2.1.js"></script>
+	<script type="text/javascript" src="/js/lib/jquery.form.js"></script>
+	<script type="text/javascript" src="/js/lib/jquery.validate.min.js"></script>
+	<script type="text/javascript" src="/js/lib/jquery.validate-extends.js"></script>
+	<script type="text/javascript" src="/js/lib/plate.js"></script>
+	<script type="text/javascript" src="/js/component/layer/layer.js"></script>
+	<script type="text/javascript" src="/js/ui/menu.js"></script>
+	<script type="text/javascript">
+	/*<![CDATA[*/
+	     "use strict"
+	     var form = $("#cust-form").validate({
+	    	 rules:{
+	    		 custName:{
+	    			 requiredNotEmpty:true
+	    		 },
+	    		 custPlateName:{
+	    			 requiredNotEmpty:true
+	    		 },
+	    		 address:{
+	    			 requiredNotEmpty:true
+	    		 },
+	    	 },
+	    	 messages:{
+	    		 custName:{
+	    			 requiredNotEmpty:"客户名必填"
+	    		 },
+	    		 custPlateName:{
+	    			 requiredNotEmpty:"公司名必填"
+	    		 },
+	    		 address:{
+	    			 requiredNotEmpty:"地址必填"
+	    		 },
+	    	 },
+	    	 wrapper: "li",
+	    	 errorLabelContainer:$("#cust-form .error-box ul")
+	     });
+		 $("#cust-form").ajaxForm({
+			 beforeSubmit:function(){
+				 return form.form();
+			 },
+			 success:function(res){
+				 if(res.code == 0){
+					 layer.alert("保存成功！",function(index){						 
+						 layer.close(index);
+						// window.history.go(-1);
+					 });
+				 }else{
+					 layer.alert("保存失败！" + res.message);
+				 }
+			 },
+			 dataType:'json'
+		 });
+	/*]]>*/     
+	</script>
+</html>

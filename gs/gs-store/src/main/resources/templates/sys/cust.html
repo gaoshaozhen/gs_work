@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>客户列表</title>		
+		<link  rel="stylesheet" type="text/css" href="/css/bootstrap/css/bootstrap.min.css"/>
+		<link  rel="stylesheet" type="text/css" href="/css/ui/plate.css"/>
+		<link  rel="stylesheet" type="text/css" href="/js/component/gstable/gs-table.css"/>
+	</head>
+	<body>		
+		<div id="wrapper">
+			<header id="main-header" th:include="header :: header"></header>
+			<aside id="main-menu"></aside>
+			<main id="main-content">
+				<div>导航/客户列表</div><hr/>
+				<div id="table-params">
+					<label>客户名：<input name="custName" type="text"/></label>
+					<button id="data-table-search-btn">搜索</button>
+					<a href="/store/sys/cust/add">新增</a>
+				</div><br/>
+				<div id='cust-list'></div>		
+			</main>
+			<footer id="main-footer" ></footer>
+		</div>		
+	</body>
+	
+	<script type="text/javascript" src="/js/lib/jquery-3.2.1.js"></script>
+	<script type="text/javascript" src="/js/lib/plate.js"></script>
+	<script type="text/javascript" src="/js/ui/menu.js"></script>
+	<script type="text/javascript" src="/js/component/layer/layer.js"></script>
+	<script type="text/javascript" src="/js/component/gstable/gs-table.js"></script>
+	<script type="text/javascript">
+		/*<![CDATA[*/
+	        var table = $("#cust-list").gsTable({
+	        	url:'/sys/cust/list',
+	        	height:'400',
+	        	fit:true,
+	        	columns:[
+	        		{text:"客户名", field:'custName', width:100},
+	        		{text:"公司名", field:'custPlateName', width:100},
+	        		{text:"地址", field:'address', width:100},
+	        		{text:"操作", width:100, 
+	        			render: function(row){	  
+	        				var dom = "<a onclick=deleteCust('custName',id)>删除</a>".replace(/id/, row.custId).replace(/custName/, row.custName)
+	        						+ "&nbsp;&nbsp;&nbsp;<a href='/store/sys/cust/update/id'>修改</a>".replace(/id/, row.custId);
+	        				
+	        				return dom;
+	        			}	
+	        		},
+	        	],
+	        	success:function(res){
+	        		if(res.code == 0){
+	        			return res.data;
+	        		}else{
+	        			alert(res.message);
+	        		}
+	        	},
+	        	addDataParams:function(){
+	        		console.log(23);
+	        		return {
+						custName:$('#table-params input[name=custName]').val()
+					}
+	        	}
+	        }).init();
+			
+			function deleteCust(name, id){
+				function deleteCustAjax(id){
+					$.ajax({
+						url:'/sys/cust/delete/' + id,
+						type:'post',
+						success:function(res){
+							if(res.code ==0){
+								layer.alert("删除成功！");
+								table.load();
+							}else{
+								layer.alert(res.message);
+							}
+						}
+					});
+				}
+				var con = layer.confirm('确认删除客户' + name + '吗？', function(){						
+						layer.close(con);
+						deleteCustAjax(id);
+				});
+			}
+			$("#data-table-search-btn").click(function(){
+				table.load();
+			}).click();
+		/*]]>*/
+	</script>
+</html>

@@ -1,0 +1,17 @@
+@CHARSET "UTF-8";
+.gs-table thead{
+	background:#F3F3F3;	
+	width:100%;
+
+}
+
+.gs-table{
+	width:100%;
+	display:block;
+}
+.gs-table tbody{
+	overflow: auto;
+	max-height:240px;
+	min-height:100px;
+	display:block;
+}

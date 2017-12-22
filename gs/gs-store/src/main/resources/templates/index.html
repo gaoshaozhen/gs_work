@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>首页</title>
+		<link  rel="stylesheet" type="text/css" href="/css/lib/bootstrap/css/bootstrap.min.css"/>
+		<link  rel="stylesheet" type="text/css" href="/css/ui/plate.css"/>
+	</head>
+<style  type="text/css">
+	#kaptcha{
+		position:absolute;
+		z-index:999;
+		height:34px;
+		right:0;	
+	}
+</style>
+<body>
+	<div id="wrapper">
+		<header id="main-header" th:include="header :: header"></header>
+		<aside id="main-menu" th:include="aside :: menu"></aside>
+		<main id="main-content">
+			<div><h3>欢迎，上线成功！</h3></div>
+		</main>
+		<footer id="main-footer" ></footer>
+	</div>
+</body>
+<script type="text/javascript" src="/js/lib/jquery-3.2.1.js"></script>
+<script src="http://www.jq22.com/jquery/bootstrap-3.3.4.js"></script>
+<script type="text/javascript" src="/js/lib/jquery.form.js"></script>
+<script type="text/javascript" src="/js/ui/menu.js"></script>
+<script type="text/javascript">
+/*<![CDATA[*/
+$(document).ready(function () {
+		  var trigger = $('.hamburger'),
+		      overlay = $('.overlay'),
+		     isClosed = false;
+
+		    trigger.click(function () {
+		      hamburger_cross();      
+		    });
+
+		    function hamburger_cross() {
+
+		      if (isClosed == true) {          
+		        overlay.hide();
+		        trigger.removeClass('is-open');
+		        trigger.addClass('is-closed');
+		        isClosed = false;
+		      } else {   
+		        overlay.show();
+		        trigger.removeClass('is-closed');
+		        trigger.addClass('is-open');
+		        isClosed = true;
+		      }
+		  }
+		  
+		  $('[data-toggle="offcanvas"]').click(function () {
+		        $('#wrapper').toggleClass('toggled');
+		  });  
+		});
+/*]]>*/           
+</script>
+</html>
